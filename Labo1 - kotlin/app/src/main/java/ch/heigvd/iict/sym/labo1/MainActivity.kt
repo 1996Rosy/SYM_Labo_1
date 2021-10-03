@@ -2,9 +2,17 @@ package ch.heigvd.iict.sym.labo1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
 import android.util.Log
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import android.content.Intent
+import android.text.InputType
+import android.text.method.PasswordTransformationMethod
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         password = findViewById(R.id.main_password)
         cancelButton = findViewById(R.id.main_cancel)
         validateButton = findViewById(R.id.main_validate)
+
         // Kotlin, au travers des Android Kotlin Extensions permet d'automatiser encore plus cette
         // étape en créant automatiquement les variables pour tous les éléments graphiques présents
         // dans le layout et disposant d'un id
@@ -61,6 +70,8 @@ class MainActivity : AppCompatActivity() {
             val emailInput = email.text?.toString()
             val passwordInput = password.text?.toString()
 
+
+
             if(emailInput.isNullOrEmpty() or passwordInput.isNullOrEmpty()) {
                 // on affiche un message dans les logs de l'application
                 Log.d(TAG, "Au moins un des deux champs est vide")
@@ -74,9 +85,27 @@ class MainActivity : AppCompatActivity() {
                 // Pour les fonctions lambda, on doit préciser à quelle fonction l'appel à return
                 // doit être appliqué
                 return@setOnClickListener
+            }else{
+                val value = Patterns.EMAIL_ADDRESS;
+               if(!value.matcher(emailInput).matches()) {
+                   Toast.makeText(applicationContext, "invalid Email!", Toast.LENGTH_SHORT).show()
+               } else {
+                   if(!credentials.contains(Pair(emailInput,passwordInput))){
+                       val alertDialog = AlertDialog.Builder(this)
+                       alertDialog.apply {
+                           setTitle("Email or Password are not correct!")
+                       }.create().show()
+                   }else{
+                       val intent = Intent(this, SecondActivity::class.java)
+                       intent.putExtra("Email", emailInput) //Optional parameters
+
+                      startActivity(intent)
+                   }
+
+               }
+
             }
 
-            //TODO à compléter...
         }
     }
 

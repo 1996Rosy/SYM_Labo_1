@@ -40,6 +40,7 @@
             android:id="@+id/main_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions"
             android:layout_below="@id/main_email_title"
             android:hint="@string/main_email_hint" />
 
@@ -55,6 +56,7 @@
             android:id="@+id/main_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions|textPassword"
             android:layout_below="@id/main_password_title"
             android:hint="@string/main_password_hint" />
 
