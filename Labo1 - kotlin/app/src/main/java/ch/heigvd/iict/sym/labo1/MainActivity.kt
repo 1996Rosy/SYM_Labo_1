@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import android.content.Intent
+import android.content.res.Configuration
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
 
@@ -36,7 +37,11 @@ class MainActivity : AppCompatActivity() {
         // l'appel à la méthode onCreate de la super classe est obligatoire
         super.onCreate(savedInstanceState)
         // on définit le layout à utiliser pour l'affichage
-        setContentView(R.layout.activity_main)
+
+            setContentView(R.layout.activity_main)
+
+
+
 
         // on va maintenant lier le code avec les éléments graphiques (champs texts, boutons, etc.)
         // présents dans le layout (nous allons utiliser l'id défini dans le layout, le cast est
