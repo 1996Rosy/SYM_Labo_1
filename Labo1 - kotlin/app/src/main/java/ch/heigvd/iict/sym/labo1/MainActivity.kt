@@ -3,8 +3,12 @@ package ch.heigvd.iict.sym.labo1
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
 
@@ -75,8 +79,35 @@ class MainActivity : AppCompatActivity() {
                 // doit être appliqué
                 return@setOnClickListener
             }
+            //TODO à completer
+            if(!isValidEmail(emailInput.toString())){ //Ici on teste que l'email suit bien le pattern d'un email
+                val text = "Invalid Email!" //Utilisation du template de developers.android
+                val duration = Toast.LENGTH_SHORT
+                val toast = Toast.makeText(applicationContext, text, duration)
+                toast.show()
+                return@setOnClickListener
+            }
+            if(!isValidCredentials(emailInput.toString(), passwordInput.toString(), credentials)){
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Invalid credentials")
+                builder.setMessage("You have typed the wrong credentials")
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                    Toast.makeText(applicationContext,
+                        android.R.string.yes, Toast.LENGTH_SHORT).show()
+                }
 
-            //TODO à compléter...
+                builder.setNegativeButton(android.R.string.no) { dialog, which ->
+                    Toast.makeText(applicationContext,
+                        android.R.string.no, Toast.LENGTH_SHORT).show()
+                }
+
+                builder.setNeutralButton("Maybe") { dialog, which ->
+                    Toast.makeText(applicationContext,
+                        "Maybe", Toast.LENGTH_SHORT).show()
+                }
+                builder.show()
+                return@setOnClickListener
+            }
         }
     }
 
@@ -88,6 +119,13 @@ class MainActivity : AppCompatActivity() {
     // avec les autres éléments non-static de la classe
     companion object {
         private const val TAG: String = "MainActivity"
+        private fun isValidEmail(email:String): Boolean{
+            return Pattern.matches(Patterns.EMAIL_ADDRESS.pattern(), email)
+        }
+        private fun isValidCredentials(email:String, password:String, credentials: List<Pair<String, String>>): Boolean{
+            return (email == credentials[0].first && password == credentials[0].second) ||
+                    (email == credentials[1].first && password == credentials[1].second)
+        }
     }
 
 }
