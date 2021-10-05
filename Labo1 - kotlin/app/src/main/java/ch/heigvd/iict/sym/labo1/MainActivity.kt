@@ -83,20 +83,21 @@ class MainActivity : AppCompatActivity() {
                 // Pour les fonctions lambda, on doit préciser à quelle fonction l'appel à return
                 // doit être appliqué
                 return@setOnClickListener
-            }
-
-            //TODO à compléter...
-            if(!valiateEmail(emailInput.toString())) {
-                Toast.makeText(applicationContext,"Invalid email",Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
             } else {
-                if(!verifyCredential(credentials, emailInput.toString(), passwordInput.toString())) {
-                    AlertDialog.Builder(applicationContext).setMessage("Your input doesn't match any credential !").setTitle("Incorrect credential").create().show()
+                if(!valiateEmail(emailInput.toString())) {
+                    Toast.makeText(applicationContext,"Invalid email",Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
                 } else {
-                    val i = Intent(this, NewActivity::class.java).apply {
-                        putExtra(EXTRA_MESSAGE, emailInput)
+                    if(!verifyCredential(credentials, emailInput.toString(), passwordInput.toString())) {
+                        AlertDialog.Builder(applicationContext).setMessage("Your input doesn't match any credential !").setTitle("Incorrect credential").create().show()
+                        return@setOnClickListener
+                    } else {
+                        val i = Intent(this, NewActivity::class.java).apply {
+                            putExtra(EXTRA_MESSAGE, emailInput)
+                        }
+                        startActivity(i)
+                        return@setOnClickListener
                     }
-                    startActivity(i)
                 }
             }
 
