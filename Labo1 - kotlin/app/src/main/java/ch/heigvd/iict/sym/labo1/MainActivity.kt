@@ -1,11 +1,15 @@
 package ch.heigvd.iict.sym.labo1
 
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -82,6 +86,20 @@ class MainActivity : AppCompatActivity() {
             }
 
             //TODO à compléter...
+            if(!valiateEmail(emailInput.toString())) {
+                Toast.makeText(applicationContext,"Invalid email",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else {
+                if(!verifyCredential(credentials, emailInput.toString(), passwordInput.toString())) {
+                    AlertDialog.Builder(applicationContext).setMessage("Your input doesn't match any credential !").setTitle("Incorrect credential").create().show()
+                } else {
+                    val i = Intent(this, NewActivity::class.java).apply {
+                        putExtra(EXTRA_MESSAGE, emailInput)
+                    }
+                    startActivity(i)
+                }
+            }
+
         }
     }
 
@@ -93,6 +111,14 @@ class MainActivity : AppCompatActivity() {
     // avec les autres éléments non-static de la classe
     companion object {
         private const val TAG: String = "MainActivity"
+
+        private fun valiateEmail(email: String): Boolean {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        }
+
+        private fun verifyCredential(credentials: List<Pair<String, String>>, email: String, password: String): Boolean {
+            return credentials.contains(Pair(email, password))
+        }
     }
 
 }
