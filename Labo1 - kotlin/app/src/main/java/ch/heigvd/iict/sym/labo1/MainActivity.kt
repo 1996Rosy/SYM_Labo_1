@@ -13,6 +13,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
+import android.widget.TextView
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var cancelButton: Button
     private lateinit var validateButton: Button
+    private lateinit var createButton: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // l'appel à la méthode onCreate de la super classe est obligatoire
@@ -50,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         password = findViewById(R.id.main_password)
         cancelButton = findViewById(R.id.main_cancel)
         validateButton = findViewById(R.id.main_validate)
+        createButton= findViewById(R.id.main_new_account)
 
         // Kotlin, au travers des Android Kotlin Extensions permet d'automatiser encore plus cette
         // étape en créant automatiquement les variables pour tous les éléments graphiques présents
@@ -111,6 +114,10 @@ class MainActivity : AppCompatActivity() {
 
             }
 
+        }
+        createButton.setOnClickListener{
+            val intent = Intent(this, CreateAccountActivity::class.java)
+            startActivity(intent)
         }
     }
 

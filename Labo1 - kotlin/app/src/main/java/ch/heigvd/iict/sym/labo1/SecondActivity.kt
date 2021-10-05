@@ -21,14 +21,10 @@ class SecondActivity : AppCompatActivity() {
         setContentView(R.layout.activity_second)
         val textView = findViewById<TextView>(R.id.second_email)
         textView.setText(intent.getStringExtra("Email")).toString()
-        ImageDownloader(findViewById(R.id.image),"https//thispersondoesnotexist.com/image").show()
+        ImageDownloader(findViewById(R.id.image),"https://thispersondoesnotexist.com/image").show()
 
 
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_second)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
-    }
+
 }
