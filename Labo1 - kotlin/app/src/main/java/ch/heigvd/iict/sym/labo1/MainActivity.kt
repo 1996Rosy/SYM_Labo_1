@@ -9,6 +9,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import java.util.regex.Pattern
+import android.R.id
+
+import android.content.Intent
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -79,35 +85,33 @@ class MainActivity : AppCompatActivity() {
                 // doit être appliqué
                 return@setOnClickListener
             }
-            //TODO à completer
-            if(!isValidEmail(emailInput.toString())){ //Ici on teste que l'email suit bien le pattern d'un email
-                val text = "Invalid Email!" //Utilisation du template de developers.android
-                val duration = Toast.LENGTH_SHORT
-                val toast = Toast.makeText(applicationContext, text, duration)
-                toast.show()
-                return@setOnClickListener
-            }
-            if(!isValidCredentials(emailInput.toString(), passwordInput.toString(), credentials)){
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Invalid credentials")
-                builder.setMessage("You have typed the wrong credentials")
-                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                    Toast.makeText(applicationContext,
-                        android.R.string.yes, Toast.LENGTH_SHORT).show()
+            else{
+                //TODO à completer
+                if(!isValidEmail(emailInput.toString())){ //Ici on teste que l'email suit bien le pattern d'un email
+                    val text = "Invalid Email!" //Utilisation du template de developers.android
+                    val duration = Toast.LENGTH_SHORT
+                    val toast = Toast.makeText(applicationContext, text, duration)
+                    toast.show()
+                    return@setOnClickListener
+                }
+                else if(!isValidCredentials(emailInput.toString(), passwordInput.toString(), credentials)){
+                    //Ici on crée l'alert dialog
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Invalid credentials")
+                    builder.setMessage("You have typed the wrong credentials")
+                    builder.show()
+                    return@setOnClickListener
+                }
+                else{
+                    //Ici on passe en paramètre l'email et on commence une nouvelle activité
+                    val i = Intent(this, NewActivity2::class.java)
+                    i.putExtra("email", emailInput)
+                    startActivity(i)
+                    return@setOnClickListener
                 }
 
-                builder.setNegativeButton(android.R.string.no) { dialog, which ->
-                    Toast.makeText(applicationContext,
-                        android.R.string.no, Toast.LENGTH_SHORT).show()
-                }
-
-                builder.setNeutralButton("Maybe") { dialog, which ->
-                    Toast.makeText(applicationContext,
-                        "Maybe", Toast.LENGTH_SHORT).show()
-                }
-                builder.show()
-                return@setOnClickListener
             }
+
         }
     }
 
