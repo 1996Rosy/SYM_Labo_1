@@ -1,5 +1,6 @@
 package ch.heigvd.iict.sym.labo1
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE

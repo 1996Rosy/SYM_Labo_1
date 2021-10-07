@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         // cf. https://medium.com/@temidjoy/findviewbyid-vs-android-kotlin-extensions-7db3c6cc1d0a
 
         //mise en place des événements
+
         cancelButton.setOnClickListener {
             //on va vider les champs de la page de login lors du clique sur le bouton Cancel
             email.text?.clear()
@@ -101,6 +102,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+
+
         }
     }
 
@@ -114,12 +117,19 @@ class MainActivity : AppCompatActivity() {
         private const val TAG: String = "MainActivity"
 
         private fun valiateEmail(email: String): Boolean {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
         }
 
         private fun verifyCredential(credentials: List<Pair<String, String>>, email: String, password: String): Boolean {
             return credentials.contains(Pair(email, password))
         }
+    }
+
+    fun createAccount(view: android.view.View) {
+        val i = Intent(this, NewActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE, "test")
+        }
+        startActivity(i)
     }
 
 }
