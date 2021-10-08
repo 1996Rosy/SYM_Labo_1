@@ -12,6 +12,9 @@ import java.util.regex.Pattern
 import android.R.id
 
 import android.content.Intent
+import android.widget.TextView
+import android.app.Activity
+
 
 
 
@@ -22,10 +25,10 @@ class MainActivity : AppCompatActivity() {
     // ceci est fait juste pour simplifier ce premier laboratoire,
     // mais il est évident que de hardcoder ceux-ci est une pratique à éviter à tout prix...
     // /!\ listOf() retourne une List<T> qui est immuable
-    private val credentials = listOf(
+    private var credentials = listOf(
                                 Pair("user1@heig-vd.ch","1234"),
                                 Pair("user2@heig-vd.ch","abcd")
-                            )
+                            ).toMutableList()
 
     // le modifieur lateinit permet de définir des variables avec un type non-null
     // sans pour autant les initialiser immédiatement
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var cancelButton: Button
     private lateinit var validateButton: Button
+    private lateinit var newAccountLink: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // l'appel à la méthode onCreate de la super classe est obligatoire
@@ -47,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         password = findViewById(R.id.main_password)
         cancelButton = findViewById(R.id.main_cancel)
         validateButton = findViewById(R.id.main_validate)
+        newAccountLink = findViewById(R.id.main_new_account)
         // Kotlin, au travers des Android Kotlin Extensions permet d'automatiser encore plus cette
         // étape en créant automatiquement les variables pour tous les éléments graphiques présents
         // dans le layout et disposant d'un id
@@ -109,11 +114,28 @@ class MainActivity : AppCompatActivity() {
                     startActivity(i)
                     return@setOnClickListener
                 }
-
+            }
+        }
+        newAccountLink.setOnClickListener{
+            // Lorsqu'on clique sur le lien 'new account' on doit pouvoir lancer une nouvelle activité
+            val i = Intent(this, NewActivity5::class.java);
+            startActivityForResult(i, LAUNCH_NEW_ACTIVITY);
+            return@setOnClickListener;
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LAUNCH_NEW_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+                val result = data?.getStringExtra("result")
+                val result2 = data?.getStringExtra("result2")
+                val pair = Pair(result.toString(), result2.toString())
+                credentials.add(pair)
             }
 
         }
-    }
+    } //onActivityResult
+
 
     // En Kotlin, les variables static ne sont pas tout à fait comme en Java
     // pour des raison de lisibilité du code, les variables et méthodes static
@@ -122,13 +144,13 @@ class MainActivity : AppCompatActivity() {
     // sans devoir trouver le modifieur dans la définition de ceux-ci, qui peuvent être mélangé
     // avec les autres éléments non-static de la classe
     companion object {
+        private const val LAUNCH_NEW_ACTIVITY = 1
         private const val TAG: String = "MainActivity"
         private fun isValidEmail(email:String): Boolean{
             return Pattern.matches(Patterns.EMAIL_ADDRESS.pattern(), email)
         }
         private fun isValidCredentials(email:String, password:String, credentials: List<Pair<String, String>>): Boolean{
-            return (email == credentials[0].first && password == credentials[0].second) ||
-                    (email == credentials[1].first && password == credentials[1].second)
+            return credentials.contains(Pair(email, password))
         }
     }
 

@@ -8,18 +8,30 @@
     android:layout_marginEnd="@dimen/app_horizontal_margin"
     android:layout_marginTop="@dimen/app_vertical_margin"
     android:layout_marginBottom="@dimen/app_vertical_margin"
-    tools:context=".MainActivity">
+    tools:context=".NewActivity5">
+
+    <TextView
+        android:id="@+id/main_email_title2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_title_hint"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="201dp"
+        tools:ignore="MissingConstraints" />
+
 
     <ImageView
         android:id="@+id/main_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:tint="@color/colorPrimaryDark"
+        android:layout_marginBottom="72dp"
+        android:contentDescription="@string/main_icon_desc"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_launcher_foreground"
-        android:contentDescription="@string/main_icon_desc" />
+        app:tint="@color/colorPrimaryDark" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -30,18 +42,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <TextView
             android:id="@+id/main_email_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/main_email_hint" />
+            android:text="@string/new_email_hint" />
 
         <EditText
             android:id="@+id/main_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/main_email_title"
-            android:hint="@string/main_email_hint"
+            android:hint="@string/new_email_hint"
             android:inputType="textEmailAddress" />
 
         <TextView
@@ -50,14 +63,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/main_email"
             android:layout_marginTop="@dimen/app_vertical_separation"
-            android:text="@string/main_password_hint" />
+            android:text="@string/new_password_hint" />
 
         <EditText
             android:id="@+id/main_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/main_password_title"
-            android:hint="@string/main_password_hint"
+            android:hint="@string/new_password_hint"
             android:inputType="textPassword" />
 
         <LinearLayout
@@ -67,6 +80,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/app_vertical_separation"
             android:orientation="horizontal">
+
 
             <Button
                 android:id="@+id/main_cancel"
@@ -85,16 +99,5 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/main_new_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_create_account"
-        android:textColor="@color/colorPrimary"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

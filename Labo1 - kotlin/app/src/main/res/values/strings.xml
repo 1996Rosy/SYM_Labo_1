@@ -9,13 +9,12 @@
     <string name="main_create_account">New account</string>
     <string name="main_icon_desc">Application\'s logo</string>
     <string name="title_activity_new">NewActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="new_email_hint">New e-mail address</string>
+    <string name="new_password_hint">New password</string>
+    <string name="new_title_hint">New Account</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+
 
 </resources>
