@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                 // doit être appliqué
                 return@setOnClickListener
             } else {
-                if(!valiateEmail(emailInput.toString())) {
+                if(!validateEmail(emailInput.toString())) {
                     Toast.makeText(applicationContext,"Invalid email",Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 } else {
@@ -101,9 +101,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-
-
-
         }
     }
 
@@ -116,7 +113,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG: String = "MainActivity"
 
-        private fun valiateEmail(email: String): Boolean {
+        private fun validateEmail(email: String): Boolean {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
         }
 
@@ -126,7 +123,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createAccount(view: android.view.View) {
-        val i = Intent(this, NewActivity::class.java).apply {
+        val i = Intent(this, CreateAccountActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, "test")
         }
         startActivity(i)
