@@ -1,5 +1,6 @@
 package ch.heigvd.iict.sym.labo1
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -22,10 +23,10 @@ class MainActivity : AppCompatActivity() {
     // ceci est fait juste pour simplifier ce premier laboratoire,
     // mais il est évident que de hardcoder ceux-ci est une pratique à éviter à tout prix...
     // /!\ listOf() retourne une List<T> qui est immuable
-    private val credentials = listOf(
+    private var credentials = listOf(
                                 Pair("user1@heig-vd.ch","1234"),
                                 Pair("user2@heig-vd.ch","abcd")
-                            )
+                            ).toMutableList()
 
     // le modifieur lateinit permet de définir des variables avec un type non-null
     // sans pour autant les initialiser immédiatement
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+credentials.toMutableList()
         // on va maintenant lier le code avec les éléments graphiques (champs texts, boutons, etc.)
         // présents dans le layout (nous allons utiliser l'id défini dans le layout, le cast est
         // réalisé automatiquement)
@@ -117,7 +118,21 @@ class MainActivity : AppCompatActivity() {
         }
         createButton.setOnClickListener{
             val intent = Intent(this, CreateAccountActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent,1)
+
+        }
+
+        }
+    // see: https://tutorial.eyehunts.com/android/getting-a-result-from-an-activity-android-startactivityforresult-example-kotlin/
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                val email = data?.getStringExtra("email")
+                val password= data?.getStringExtra("password")
+                credentials.add( Pair(email.toString(), password.toString()))
+            }
+
         }
     }
 

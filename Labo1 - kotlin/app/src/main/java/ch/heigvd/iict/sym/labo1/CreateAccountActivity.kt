@@ -1,5 +1,6 @@
 package ch.heigvd.iict.sym.labo1
 
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -82,6 +83,13 @@ class CreateAccountActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "invalid Email!", Toast.LENGTH_SHORT).show()
 
                 } else {
+
+                    // Put the String to pass back into an Intent and close this activity
+                    val intent = Intent()
+                    intent.putExtra("email", emailInput)
+                    intent.putExtra("password", passwordInput)
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
 
                 }
 
