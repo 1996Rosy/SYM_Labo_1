@@ -81,7 +81,7 @@ class CreateAccountActivity : AppCompatActivity() {
                 val value = Patterns.EMAIL_ADDRESS;
                 if (!value.matcher(emailInput).matches()) {
                     Toast.makeText(applicationContext, "invalid Email!", Toast.LENGTH_SHORT).show()
-
+                    return@setOnClickListener
                 } else {
 
                     // Put the String to pass back into an Intent and close this activity
@@ -90,12 +90,39 @@ class CreateAccountActivity : AppCompatActivity() {
                     intent.putExtra("password", passwordInput)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
-
+                    return@setOnClickListener
                 }
 
             }
 
         }
+    }
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause() called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy() called")
+    }
+    companion object {
+        private const val TAG: String = "CreateAcountActivity"
     }
 
 

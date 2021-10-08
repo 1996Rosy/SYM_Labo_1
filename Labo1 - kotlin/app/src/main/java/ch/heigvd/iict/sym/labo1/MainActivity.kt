@@ -93,7 +93,7 @@ credentials.toMutableList()
                     password.error = getString(R.string.main_mandatory_field)
                 // Pour les fonctions lambda, on doit préciser à quelle fonction l'appel à return
                 // doit être appliqué
-                return@setOnClickListener
+               
             }else{
                 val value = Patterns.EMAIL_ADDRESS;
                if(!value.matcher(emailInput).matches()) {
@@ -109,6 +109,7 @@ credentials.toMutableList()
                        intent.putExtra("Email", emailInput) //Optional parameters
 
                       startActivity(intent)
+                     
                    }
 
                }
@@ -119,7 +120,7 @@ credentials.toMutableList()
         createButton.setOnClickListener{
             val intent = Intent(this, CreateAccountActivity::class.java)
             startActivityForResult(intent,1)
-
+            
         }
 
         }
@@ -135,7 +136,30 @@ credentials.toMutableList()
 
         }
     }
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() called")
+    }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause() called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy() called")
+    }
     // En Kotlin, les variables static ne sont pas tout à fait comme en Java
     // pour des raison de lisibilité du code, les variables et méthodes static
     // d'une classe doivent être regroupées dans un bloc à part: le companion object

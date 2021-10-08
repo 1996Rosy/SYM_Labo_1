@@ -12,8 +12,8 @@ import java.io.IOException
 import java.net.URL
 
 /**
- *  Classe utilisÃ©e pour tÃ©lÃ©charger une image sur internet de maniÃ¨re asynchrone
- *  le prochain laboratoire explorera plus en dÃ©tail cet aspect d'Android
+ *  Classe utilisée pour télécharger une image sur internet de manière asynchrone
+ *  le prochain laboratoire explorera plus en détail cet aspect d'Android
  */
 class ImageDownloader(private var imageView: ImageView, private var url : String) {
 
