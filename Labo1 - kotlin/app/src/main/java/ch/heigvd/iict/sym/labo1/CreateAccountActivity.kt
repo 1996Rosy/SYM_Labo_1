@@ -28,7 +28,7 @@ class CreateAccountActivity : AppCompatActivity() {
     private lateinit var cancelButton: Button
     private lateinit var validateButton: Button
     private lateinit var createButton: TextView
-    private   var lifeCycles=LifeCycles()
+    private   var utils=Utils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,28 +62,15 @@ class CreateAccountActivity : AppCompatActivity() {
             //on récupère le contenu de deux champs dans des variables de type String
             val emailInput = email.text?.toString()
             val passwordInput = password.text?.toString()
+            val error = getString(R.string.main_mandatory_field)
 
 
 
-            if (emailInput.isNullOrEmpty() or passwordInput.isNullOrEmpty()) {
-                // on affiche un message dans les logs de l'application
-                Log.d(TAG, "Au moins un des deux champs est vide")
-                // on affiche un message d'erreur sur les champs qui n'ont pas été renseignés
-                // la méthode getString permet de charger un String depuis les ressources de
-                // l'application à partir de son id
-                if (emailInput.isNullOrEmpty())
-                    email.error = getString(R.string.main_mandatory_field)
-                if (passwordInput.isNullOrEmpty())
-                    password.error = getString(R.string.main_mandatory_field)
-                // Pour les fonctions lambda, on doit préciser à quelle fonction l'appel à return
-                // doit être appliqué
-                return@setOnClickListener
-            } else {
-                val value = Patterns.EMAIL_ADDRESS;
-                if (!value.matcher(emailInput).matches()) {
-                    Toast.makeText(applicationContext, "invalid Email!", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                } else {
+            when{
+                utils.checkNullEmailAndPassword(email, password, TAG, error) -> return@setOnClickListener
+                utils.checkPatternEmail(email, applicationContext) -> return@setOnClickListener
+
+                else -> {
 
                     // Put the String to pass back into an Intent and close this activity
                     val intent = Intent()
@@ -91,7 +78,6 @@ class CreateAccountActivity : AppCompatActivity() {
                     intent.putExtra("password", passwordInput)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
-                    return@setOnClickListener
                 }
 
             }
@@ -101,28 +87,28 @@ class CreateAccountActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        lifeCycles.start(TAG)
+        utils.start(TAG)
     }
 
     override fun onPause() {
         super.onPause()
-        lifeCycles.pause(TAG)
+        utils.pause(TAG)
 
     }
 
     override fun onResume() {
         super.onResume()
-        lifeCycles.resume(TAG)
+        utils.resume(TAG)
     }
 
     override fun onStop() {
         super.onStop()
-        lifeCycles.stop(TAG)
+        utils.stop(TAG)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        lifeCycles.destroy(TAG)
+        utils.destroy(TAG)
     }
     companion object {
         private const val TAG: String = "CreateAcountActivity"

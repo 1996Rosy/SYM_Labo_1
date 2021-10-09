@@ -16,7 +16,7 @@ import ch.heigvd.iict.sym.labo1.network.ImageDownloader
 class SecondActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private   var lifeCycles=LifeCycles()
+    private   var utils=Utils()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
@@ -30,28 +30,28 @@ class SecondActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        lifeCycles.start(TAG)
+        utils.start(TAG)
     }
 
     override fun onPause() {
         super.onPause()
-        lifeCycles.pause(TAG)
+        utils.pause(TAG)
 
     }
 
     override fun onResume() {
         super.onResume()
-     lifeCycles.resume(TAG)
+        utils.resume(TAG)
     }
 
     override fun onStop() {
         super.onStop()
-        lifeCycles.stop(TAG)
+        utils.stop(TAG)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        lifeCycles.destroy(TAG)
+        utils.destroy(TAG)
     }
     companion object {
         private const val TAG: String = "SecondActivity"

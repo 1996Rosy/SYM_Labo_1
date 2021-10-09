@@ -35,17 +35,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cancelButton: Button
     private lateinit var validateButton: Button
     private lateinit var createButton: TextView
-    private   var lifeCycles=LifeCycles()
+    private   var utils=Utils()
     override fun onCreate(savedInstanceState: Bundle?) {
         // l'appel à la méthode onCreate de la super classe est obligatoire
         super.onCreate(savedInstanceState)
         // on définit le layout à utiliser pour l'affichage
 
-            setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
 
-
-credentials.toMutableList()
+        //If list is non mutable changes aren't possible
+        credentials.toMutableList()
         // on va maintenant lier le code avec les éléments graphiques (champs texts, boutons, etc.)
         // présents dans le layout (nous allons utiliser l'id défini dans le layout, le cast est
         // réalisé automatiquement)
@@ -53,7 +53,7 @@ credentials.toMutableList()
         password = findViewById(R.id.main_password)
         cancelButton = findViewById(R.id.main_cancel)
         validateButton = findViewById(R.id.main_validate)
-        createButton= findViewById(R.id.main_new_account)
+        createButton = findViewById(R.id.main_new_account)
 
         // Kotlin, au travers des Android Kotlin Extensions permet d'automatiser encore plus cette
         // étape en créant automatiquement les variables pour tous les éléments graphiques présents
@@ -62,12 +62,7 @@ credentials.toMutableList()
 
         //mise en place des événements
         cancelButton.setOnClickListener {
-            //on va vider les champs de la page de login lors du clique sur le bouton Cancel
-            email.text?.clear()
-            password.text?.clear()
-            // on annule les éventuels messages d'erreur présents sur les champs de saisie
-            email.error = null
-            password.error = null
+            utils.cancelButton(email, password)
         }
 
         validateButton.setOnClickListener {
@@ -77,53 +72,35 @@ credentials.toMutableList()
 
             //on récupère le contenu de deux champs dans des variables de type String
             val emailInput = email.text?.toString()
-            val passwordInput = password.text?.toString()
+            val error = getString(R.string.main_mandatory_field)
+
+            when{
+                utils.checkNullEmailAndPassword(email, password, TAG, error) -> return@setOnClickListener
+                utils.checkPatternEmail(email, applicationContext) -> return@setOnClickListener
+                utils.checkCredencials(email, password, credentials, this) -> return@setOnClickListener
+                else -> {
+                    val intent = Intent(this, SecondActivity::class.java)
+                    intent.putExtra("Email", emailInput)
+
+                    startActivity(intent)
+
+                }
+            }
 
 
 
-            if(emailInput.isNullOrEmpty() or passwordInput.isNullOrEmpty()) {
-                // on affiche un message dans les logs de l'application
-                Log.d(TAG, "Au moins un des deux champs est vide")
-                // on affiche un message d'erreur sur les champs qui n'ont pas été renseignés
-                // la méthode getString permet de charger un String depuis les ressources de
-                // l'application à partir de son id
-                if(emailInput.isNullOrEmpty())
-                    email.error = getString(R.string.main_mandatory_field)
-                if(passwordInput.isNullOrEmpty())
-                    password.error = getString(R.string.main_mandatory_field)
-                // Pour les fonctions lambda, on doit préciser à quelle fonction l'appel à return
-                // doit être appliqué
-               
-            }else{
-                val value = Patterns.EMAIL_ADDRESS;
-               if(!value.matcher(emailInput).matches()) {
-                   Toast.makeText(applicationContext, "invalid Email!", Toast.LENGTH_SHORT).show()
-               } else {
-                   if(!credentials.contains(Pair(emailInput,passwordInput))){
-                       val alertDialog = AlertDialog.Builder(this)
-                       alertDialog.apply {
-                           setTitle("Email or Password are not correct!")
-                       }.create().show()
-                   }else{
-                       val intent = Intent(this, SecondActivity::class.java)
-                       intent.putExtra("Email", emailInput) //Optional parameters
 
-                      startActivity(intent)
-                     
-                   }
 
-               }
+
+
+            createButton.setOnClickListener {
+                val intent = Intent(this, CreateAccountActivity::class.java)
+                startActivityForResult(intent, 1)
 
             }
 
         }
-        createButton.setOnClickListener{
-            val intent = Intent(this, CreateAccountActivity::class.java)
-            startActivityForResult(intent,1)
-            
-        }
-
-        }
+    }
     // see: https://tutorial.eyehunts.com/android/getting-a-result-from-an-activity-android-startactivityforresult-example-kotlin/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -139,28 +116,28 @@ credentials.toMutableList()
     override fun onStart() {
         super.onStart()
 
-        lifeCycles.start(TAG)
+        utils.start(TAG)
     }
 
     override fun onPause() {
         super.onPause()
-        lifeCycles.pause(TAG)
+        utils.pause(TAG)
 
     }
 
     override fun onResume() {
         super.onResume()
-        lifeCycles.resume(TAG)
+        utils.resume(TAG)
     }
 
     override fun onStop() {
         super.onStop()
-        lifeCycles.stop(TAG)
+        utils.stop(TAG)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        lifeCycles.destroy(TAG)
+        utils.destroy(TAG)
     }
     // En Kotlin, les variables static ne sont pas tout à fait comme en Java
     // pour des raison de lisibilité du code, les variables et méthodes static
