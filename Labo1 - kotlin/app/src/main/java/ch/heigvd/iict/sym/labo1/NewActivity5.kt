@@ -33,47 +33,20 @@ class NewActivity5 : AppCompatActivity() {
 
         //mise en place des événements
         cancelButton.setOnClickListener {
-            //on va vider les champs de la page de login lors du clique sur le bouton Cancel
-            email.text?.clear()
-            password.text?.clear()
-            // on annule les éventuels messages d'erreur présents sur les champs de saisie
-            email.error = null
-            password.error = null
+            ActivityUtils.cancelButtonEvent(email, password)
         }
         validateButton.setOnClickListener {
             //on réinitialise les messages d'erreur
             email.error = null
             password.error = null
-
             //on récupère le contenu de deux champs dans des variables de type String
             val emailInput = email.text?.toString()
             val passwordInput = password.text?.toString()
-
-            if(emailInput.isNullOrEmpty() or passwordInput.isNullOrEmpty()) {
-                // on affiche un message dans les logs de l'application
-                Log.d(TAG, "Au moins un des deux champs est vide")
-                // on affiche un message d'erreur sur les champs qui n'ont pas été renseignés
-                // la méthode getString permet de charger un String depuis les ressources de
-                // l'application à partir de son id
-                if(emailInput.isNullOrEmpty())
-                    email.error = getString(R.string.main_mandatory_field)
-                if(passwordInput.isNullOrEmpty())
-                    password.error = getString(R.string.main_mandatory_field)
-                // Pour les fonctions lambda, on doit préciser à quelle fonction l'appel à return
-                // doit être appliqué
-                return@setOnClickListener
-            }
-            else{
-                //TODO à completer
-                if(!isValidEmail(emailInput.toString())){ //Ici on teste que l'email suit bien le pattern d'un email
-                    val text = "Invalid Email!" //Utilisation du template de developers.android
-                    val duration = Toast.LENGTH_SHORT
-                    val toast = Toast.makeText(applicationContext, text, duration)
-                    toast.show()
-                    return@setOnClickListener
-                }
-
-                else{
+            val error = getString(R.string.main_mandatory_field)
+            when{
+                ActivityUtils.fieldNullOrEmpty(email, password, TAG, error) -> return@setOnClickListener
+                ActivityUtils.notValidEmail(email, applicationContext) -> return@setOnClickListener
+                else -> {
                     val returnIntent = Intent()
                     returnIntent.putExtra("result", emailInput.toString())
                     returnIntent.putExtra("result2", passwordInput.toString())
@@ -81,17 +54,10 @@ class NewActivity5 : AppCompatActivity() {
                     finish()
                     return@setOnClickListener
                 }
-
             }
-
         }
-
     }
     companion object {
         private const val TAG: String = "NewActivity5"
-        private fun isValidEmail(email:String): Boolean{
-            return Pattern.matches(Patterns.EMAIL_ADDRESS.pattern(), email)
-        }
-
     }
 }

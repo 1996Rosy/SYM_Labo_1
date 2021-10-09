@@ -18,7 +18,6 @@ import android.app.Activity
 
 
 
-
 class MainActivity : AppCompatActivity() {
 
     // on définit une liste de couples e-mail / mot de passe
@@ -26,9 +25,9 @@ class MainActivity : AppCompatActivity() {
     // mais il est évident que de hardcoder ceux-ci est une pratique à éviter à tout prix...
     // /!\ listOf() retourne une List<T> qui est immuable
     private var credentials = listOf(
-                                Pair("user1@heig-vd.ch","1234"),
-                                Pair("user2@heig-vd.ch","abcd")
-                            ).toMutableList()
+        Pair("user1@heig-vd.ch","1234"),
+        Pair("user2@heig-vd.ch","abcd")
+    ).toMutableList()
 
     // le modifieur lateinit permet de définir des variables avec un type non-null
     // sans pour autant les initialiser immédiatement
@@ -59,55 +58,26 @@ class MainActivity : AppCompatActivity() {
 
         //mise en place des événements
         cancelButton.setOnClickListener {
-            //on va vider les champs de la page de login lors du clique sur le bouton Cancel
-            email.text?.clear()
-            password.text?.clear()
-            // on annule les éventuels messages d'erreur présents sur les champs de saisie
-            email.error = null
-            password.error = null
+            ActivityUtils.cancelButtonEvent(email, password)
         }
-
+        newAccountLink.setOnClickListener{
+            // Lorsqu'on clique sur le lien 'new account' on doit pouvoir lancer une nouvelle activité
+            val i = Intent(this, NewActivity5::class.java);
+            startActivityForResult(i, LAUNCH_NEW_ACTIVITY);
+            return@setOnClickListener;
+        }
         validateButton.setOnClickListener {
             //on réinitialise les messages d'erreur
             email.error = null
             password.error = null
-
             //on récupère le contenu de deux champs dans des variables de type String
             val emailInput = email.text?.toString()
-            val passwordInput = password.text?.toString()
-
-            if(emailInput.isNullOrEmpty() or passwordInput.isNullOrEmpty()) {
-                // on affiche un message dans les logs de l'application
-                Log.d(TAG, "Au moins un des deux champs est vide")
-                // on affiche un message d'erreur sur les champs qui n'ont pas été renseignés
-                // la méthode getString permet de charger un String depuis les ressources de
-                // l'application à partir de son id
-                if(emailInput.isNullOrEmpty())
-                    email.error = getString(R.string.main_mandatory_field)
-                if(passwordInput.isNullOrEmpty())
-                    password.error = getString(R.string.main_mandatory_field)
-                // Pour les fonctions lambda, on doit préciser à quelle fonction l'appel à return
-                // doit être appliqué
-                return@setOnClickListener
-            }
-            else{
-                //TODO à completer
-                if(!isValidEmail(emailInput.toString())){ //Ici on teste que l'email suit bien le pattern d'un email
-                    val text = "Invalid Email!" //Utilisation du template de developers.android
-                    val duration = Toast.LENGTH_SHORT
-                    val toast = Toast.makeText(applicationContext, text, duration)
-                    toast.show()
-                    return@setOnClickListener
-                }
-                else if(!isValidCredentials(emailInput.toString(), passwordInput.toString(), credentials)){
-                    //Ici on crée l'alert dialog
-                    val builder = AlertDialog.Builder(this)
-                    builder.setTitle("Invalid credentials")
-                    builder.setMessage("You have typed the wrong credentials")
-                    builder.show()
-                    return@setOnClickListener
-                }
-                else{
+            val error = getString(R.string.main_mandatory_field)
+            when{
+                ActivityUtils.fieldNullOrEmpty(email, password, TAG, error) -> return@setOnClickListener
+                ActivityUtils.notValidEmail(email, applicationContext) -> return@setOnClickListener
+                ActivityUtils.notValidCredentials(email, password, credentials, this) -> return@setOnClickListener
+                else -> {
                     //Ici on passe en paramètre l'email et on commence une nouvelle activité
                     val i = Intent(this, NewActivity2::class.java)
                     i.putExtra("email", emailInput)
@@ -115,12 +85,6 @@ class MainActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
             }
-        }
-        newAccountLink.setOnClickListener{
-            // Lorsqu'on clique sur le lien 'new account' on doit pouvoir lancer une nouvelle activité
-            val i = Intent(this, NewActivity5::class.java);
-            startActivityForResult(i, LAUNCH_NEW_ACTIVITY);
-            return@setOnClickListener;
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -132,10 +96,8 @@ class MainActivity : AppCompatActivity() {
                 val pair = Pair(result.toString(), result2.toString())
                 credentials.add(pair)
             }
-
         }
-    } //onActivityResult
-
+    }
 
     // En Kotlin, les variables static ne sont pas tout à fait comme en Java
     // pour des raison de lisibilité du code, les variables et méthodes static
@@ -146,12 +108,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val LAUNCH_NEW_ACTIVITY = 1
         private const val TAG: String = "MainActivity"
-        private fun isValidEmail(email:String): Boolean{
-            return Pattern.matches(Patterns.EMAIL_ADDRESS.pattern(), email)
-        }
-        private fun isValidCredentials(email:String, password:String, credentials: List<Pair<String, String>>): Boolean{
-            return credentials.contains(Pair(email, password))
-        }
     }
 
 }
