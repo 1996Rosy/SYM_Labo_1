@@ -1,38 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/app_horizontal_margin"
-    android:layout_marginEnd="@dimen/app_horizontal_margin"
-    android:layout_marginTop="@dimen/app_vertical_margin"
-    android:layout_marginBottom="@dimen/app_vertical_margin"
-    tools:context=".MainActivity">
-
-    <ImageView
-        android:id="@+id/main_logo"
-        android:layout_width="207dp"
-        android:layout_height="303dp"
-        android:layout_marginBottom="4dp"
-        android:contentDescription="@string/main_icon_desc"
-        app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.032"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground"
-        app:tint="@color/colorPrimaryDark" />
+    android:layout_height="match_parent">
+    <!--  Code commun -->
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="371dp"
-        android:layout_height="219dp"
-        app:layout_constraintBottom_toTopOf="@+id/main_new_account"
-        app:layout_constraintHorizontal_bias="0.835"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.829">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/main_email_title"
@@ -46,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/main_email_title"
             android:hint="@string/main_email_hint"
-            android:inputType="textNoSuggestions" />
+            android:inputType="textEmailAddress" />
 
         <TextView
             android:id="@+id/main_password_title"
@@ -62,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/main_password_title"
             android:hint="@string/main_password_hint"
-            android:inputType="textNoSuggestions|textPassword" />
+            android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -88,17 +68,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/main_new_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_create_account"
-        android:clickable="true"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
+    <!--  Code commun -->
 </androidx.constraintlayout.widget.ConstraintLayout>
