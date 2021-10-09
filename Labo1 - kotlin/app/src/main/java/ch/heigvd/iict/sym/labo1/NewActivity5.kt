@@ -57,6 +57,30 @@ class NewActivity5 : AppCompatActivity() {
             }
         }
     }
+    override fun onStart() {
+        super.onStart()
+        LifeCycleUtils.start(TAG)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LifeCycleUtils.pause(TAG)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LifeCycleUtils.resume(TAG)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LifeCycleUtils.stop(TAG)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LifeCycleUtils.destroy(TAG)
+    }
     companion object {
         private const val TAG: String = "NewActivity5"
     }
