@@ -1,5 +1,6 @@
 package ch.heigvd.iict.sym.labo1
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +9,14 @@ import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
+
 
     // on définit une liste de couples e-mail / mot de passe
     // ceci est fait juste pour simplifier ce premier laboratoire,
@@ -20,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private val credentials = listOf(
                                 Pair("user1@heig-vd.ch","1234"),
                                 Pair("user2@heig-vd.ch","abcd")
-                            )
+                            ).toMutableList()
 
     // le modifieur lateinit permet de définir des variables avec un type non-null
     // sans pour autant les initialiser immédiatement
@@ -28,6 +33,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var cancelButton: Button
     private lateinit var validateButton: Button
+    private lateinit var newAccountButton: TextView
+
+
+    private val newAccountContract = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        result: ActivityResult ->
+            if(result.resultCode == Activity.RESULT_OK) {
+                val newEmail = result.data?.getStringExtra("email")
+                val newPassword = result.data?.getStringExtra("password")
+
+                //(credentials as MutableList<Pair<String, String>>)[1]=(Pair(newEmail.toString(), newPassword.toString()))
+                credentials.add(Pair(newEmail.toString(), newPassword.toString()))
+                println(newEmail + " , " + newPassword + " , " + credentials)
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // l'appel à la méthode onCreate de la super classe est obligatoire
@@ -46,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         password = findViewById(R.id.main_password)
         cancelButton = findViewById(R.id.main_cancel)
         validateButton = findViewById(R.id.main_validate)
+        newAccountButton = findViewById(R.id.main_new_account)
         // Kotlin, au travers des Android Kotlin Extensions permet d'automatiser encore plus cette
         // étape en créant automatiquement les variables pour tous les éléments graphiques présents
         // dans le layout et disposant d'un id
@@ -102,6 +122,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        newAccountButton.setOnClickListener {
+            val i = Intent(this, CreateAccountActivity::class.java)
+            newAccountContract.launch(i)
+        }
+
     }
 
     // En Kotlin, les variables static ne sont pas tout à fait comme en Java
@@ -112,21 +138,14 @@ class MainActivity : AppCompatActivity() {
     // avec les autres éléments non-static de la classe
     companion object {
         private const val TAG: String = "MainActivity"
-
-        private fun validateEmail(email: String): Boolean {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        }
-
-        private fun verifyCredential(credentials: List<Pair<String, String>>, email: String, password: String): Boolean {
-            return credentials.contains(Pair(email, password))
-        }
     }
 
-    fun createAccount(view: android.view.View) {
-        val i = Intent(this, CreateAccountActivity::class.java).apply {
-            putExtra(EXTRA_MESSAGE, "test")
-        }
-        startActivity(i)
+    fun verifyCredential(credentials: List<Pair<String, String>>, email: String, password: String): Boolean {
+        return credentials.contains(Pair(email, password))
+    }
+
+    fun validateEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
 }

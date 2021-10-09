@@ -1,9 +1,15 @@
 package ch.heigvd.iict.sym.labo1
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.provider.AlarmClock
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class CreateAccountActivity : AppCompatActivity() {
 
@@ -28,7 +34,50 @@ class CreateAccountActivity : AppCompatActivity() {
             // on annule les éventuels messages d'erreur présents sur les champs de saisie
             email.error = null
             password.error = null
-            super.onBackPressed();
+
+            setResult(Activity.RESULT_CANCELED)
+            finish()
         }
+
+        validateButton.setOnClickListener {
+            //on réinitialise les messages d'erreur
+            email.error = null
+            password.error = null
+
+            //on récupère le contenu de deux champs dans des variables de type String
+            val emailInput = email.text?.toString()
+            val passwordInput = password.text?.toString()
+
+            if(emailInput.isNullOrEmpty() or passwordInput.isNullOrEmpty()) {
+                // on affiche un message dans les logs de l'application
+                Log.d("New Account", "Au moins un des deux champs est vide")
+                // on affiche un message d'erreur sur les champs qui n'ont pas été renseignés
+                // la méthode getString permet de charger un String depuis les ressources de
+                // l'application à partir de son id
+                if(emailInput.isNullOrEmpty())
+                    email.error = getString(R.string.main_mandatory_field)
+                if(passwordInput.isNullOrEmpty())
+                    password.error = getString(R.string.main_mandatory_field)
+                // Pour les fonctions lambda, on doit préciser à quelle fonction l'appel à return
+                // doit être appliqué
+                return@setOnClickListener
+            } else {
+                if(!validateEmail(emailInput.toString())) {
+                    Toast.makeText(applicationContext,"Invalid email", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                } else {
+                    val i = Intent()
+                    i.putExtra("email", emailInput)
+                    i.putExtra("password", passwordInput)
+                    setResult(Activity.RESULT_OK, i)
+                    finish()
+                }
+            }
+        }
+    }
+
+
+    fun validateEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
