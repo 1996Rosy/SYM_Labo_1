@@ -97,7 +97,7 @@ class Utils: AppCompatActivity() {
      * @param email
      * @param context
      */
-    fun checkCredencials(email: EditText, password: EditText, credentials: List<Pair<String, String>>, context: Context): Boolean{
+    fun checkCredentials(email: EditText, password: EditText, credentials: List<Pair<String, String>>, context: Context): Boolean{
         //on récupère le contenu de deux champs dans des variables de type String
         val emailInput = email.text?.toString()
         val passwordInput = password.text?.toString()

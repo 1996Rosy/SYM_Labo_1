@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             when{
                 utils.checkNullEmailAndPassword(email, password, TAG, error) -> return@setOnClickListener
                 utils.checkPatternEmail(email, applicationContext) -> return@setOnClickListener
-                utils.checkCredencials(email, password, credentials, this) -> return@setOnClickListener
+                utils.checkCredentials(email, password, credentials, this) -> return@setOnClickListener
                 else -> {
                     val intent = Intent(this, SecondActivity::class.java)
                     intent.putExtra("Email", emailInput)
