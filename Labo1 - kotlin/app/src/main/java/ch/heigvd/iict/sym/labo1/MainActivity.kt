@@ -16,9 +16,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
+ private lateinit var fragment: LoginFragment
 
-
-    // on définit une liste de couples e-mail / mot de passe
+/*    // on définit une liste de couples e-mail / mot de passe
     // ceci est fait juste pour simplifier ce premier laboratoire,
     // mais il est évident que de hardcoder ceux-ci est une pratique à éviter à tout prix...
     // /!\ listOf() retourne une List<T> qui est immuable
@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var validateButton: Button
     private lateinit var newAccountButton: TextView
 
-
     private val newAccountContract = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         result: ActivityResult ->
             if(result.resultCode == Activity.RESULT_OK) {
@@ -47,12 +46,16 @@ class MainActivity : AppCompatActivity() {
                 println(newEmail + " , " + newPassword + " , " + credentials)
             }
     }
+*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // l'appel à la méthode onCreate de la super classe est obligatoire
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        supportFragmentManager.beginTransaction().add(R.id.login, LoginFragment()).commit()
         // on définit le layout à utiliser pour l'affichage
-        if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        /*if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setContentView(R.layout.activity_main_landscape)
         } else {
             setContentView(R.layout.activity_main)
@@ -126,7 +129,11 @@ class MainActivity : AppCompatActivity() {
         newAccountButton.setOnClickListener {
             val i = Intent(this, CreateAccountActivity::class.java)
             newAccountContract.launch(i)
-        }
+        }*/
+
+
+
+
 
     }
 
@@ -139,13 +146,13 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG: String = "MainActivity"
     }
-
+/*
     fun verifyCredential(credentials: List<Pair<String, String>>, email: String, password: String): Boolean {
         return credentials.contains(Pair(email, password))
     }
 
     fun validateEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
+    }*/
 
 }

@@ -7,29 +7,24 @@
     android:layout_marginStart="@dimen/app_horizontal_margin"
     android:layout_marginEnd="@dimen/app_horizontal_margin"
     android:layout_marginTop="@dimen/app_vertical_margin"
-    android:layout_marginBottom="@dimen/app_vertical_margin"
-    tools:context=".MainActivity">
+    android:layout_marginBottom="@dimen/app_vertical_margin" >
 
     <ImageView
-        android:id="@+id/login"
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/main_icon_desc"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:tint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
         app:srcCompat="@drawable/ic_launcher_foreground"
-        app:tint="@color/colorPrimaryDark" />
+        android:contentDescription="@string/main_icon_desc" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="400dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -45,9 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/main_email_title"
-            android:hint="@string/main_email_hint"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp" />
+            android:hint="@string/main_email_hint" />
 
         <TextView
             android:id="@+id/main_password_title"
@@ -62,9 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/main_password_title"
-            android:hint="@string/main_password_hint"
-            android:inputType="textPassword"
-            android:minHeight="48dp" />
+            android:hint="@string/main_password_hint" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -90,15 +81,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/main_new_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_create_account"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
